@@ -1,0 +1,30 @@
+namespace numeros_impares
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+             
+
+            Console.WriteLine("Incira o primeiro numero");
+            int primero_numero = Convert.ToInt32(Console.ReadLine());
+
+            Console.WriteLine("Incira o ultimo numero");
+            int ultimo_numero = Convert.ToInt32(Console.ReadLine());
+
+            Console.WriteLine("Os números impares de" + primero_numero + "até" + ultimo_numero + "são:");
+            int numerosdafaixa = primero_numero;
+
+           while (primero_numero <= ultimo_numero)
+            {
+                if( numerosdafaixa % 2 != 0){
+
+                    Console.WriteLine( numerosdafaixa );
+                }
+                numerosdafaixa++;
+
+            }
+          
+        }
+    }
+}
