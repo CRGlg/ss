@@ -1,0 +1,19 @@
+namespace RELOGIO_WEB;
+
+internal class Program
+{
+    static void Main(string[] args)
+    {
+        DateTime DataHoraAtual = DateTime.Now;
+        int dia = DataHoraAtual.Day;
+        int mes = DataHoraAtual.Month;
+        int ano = DataHoraAtual.Year;
+
+        int horas = DataHoraAtual.Hour;
+        int minutos = DataHoraAtual.Minute;
+        int segundos = DataHoraAtual.Second;
+
+        Console.WriteLine($"Data atual -- {dia:D2}/{mes:D2}/{ano}");
+        Console.WriteLine($"Horario atual -- {horas:D2}:{minutos:D2}:{segundos:D2}");
+    }
+}
