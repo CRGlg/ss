@@ -1,0 +1,108 @@
+using System.Text.RegularExpressions;
+
+namespace _7_testi
+{
+    internal class Program
+    {
+
+        static void Main(string[] args)
+        {
+            List<Produto> estoque = new List<Produto>();
+        Inicio:
+            Console.WriteLine("Menu \n Pronto para começar?");
+            int numero_produto = 0;
+
+            while (true)
+            {
+                Console.WriteLine("1. Cadastrar Produto");
+                Console.WriteLine("2. Listar Produtos");
+                Console.WriteLine("3. Sair");
+
+                Console.WriteLine("Escolha uma das opções...");
+
+                string op = Console.ReadLine();
+
+                switch (op)
+                {
+                    case "1":
+                        if (numero_produto < 5)
+                        {
+                            cadrastodosprodutos(estoque);
+                            numero_produto++;
+                        }
+                        else
+                        {
+                            Console.WriteLine("FOI ATINGIDO O LIMITE DE 5 ITENS");
+                        }
+                        break;
+                    case "2":
+                        listarprodutos(estoque);
+                        break;
+                    case "3":
+                        Console.WriteLine("saindo do app");
+                        Console.Write("Deseja voltar ao início (S/N)? ");
+                        string resposta = Console.ReadLine().ToUpper();
+                        if (resposta == "S")
+                        {
+                            goto Inicio;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Saindo do programa...");
+                            return;
+                        }
+                        break;
+                    default:
+                        Console.WriteLine("Opção inválida, escolha outra");
+                        break;
+
+                }
+
+            }
+        }
+
+        private static void listarprodutos(List<Produto> estoque)
+        {
+            Console.WriteLine("\nLista de Produtos:");
+            foreach (Produto produto in estoque)
+            {
+                Console.WriteLine($"Código: {produto.Codigo}, Nome: {produto.Nome}, Preço: R${produto.Preco:F2}");
+            }
+        }
+
+        private static void cadrastodosprodutos(List<Produto> estoque)
+        {
+            Console.WriteLine("Tudo bem. Insira um código de pelo menos 3 dígitos:");
+            string codigo = Console.ReadLine();
+            if (!Regex.IsMatch(codigo, @"^\d{3,}$"))
+            {
+                Console.WriteLine("Código de produto inválido. \n _Necessário mais dígitos_ ");
+                return;
+            }
+            Console.Write("Digite o nome do produto: ");
+            string nome = Console.ReadLine();
+
+            Console.Write("Digite o valor do produto: ");
+            double preco = Convert.ToDouble(Console.ReadLine());
+
+            Produto produto = new Produto(codigo, nome, preco);
+            estoque.Add(produto);
+
+            Console.WriteLine("Produto cadastrado com sucesso!");
+        }
+    }
+
+    class Produto
+    {
+        public string Codigo { get; set; }
+        public string Nome { get; set; }
+        public double Preco { get; set; }
+
+        public Produto(string codigo, string nome, double preco)
+        {
+            Codigo = codigo;
+            Nome = nome;
+            Preco = preco;
+        }
+    }
+}
