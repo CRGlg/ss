@@ -1,0 +1,102 @@
+namespace DesafioNoite;
+
+internal class Program
+{
+    static void Main(string[] args)
+    {
+        Cliente[] fila_de_espera = new Cliente[12];
+        int ListaClientes = 0;
+        while (true)
+        {
+            while (true)
+            {
+                Console.WriteLine("Menu:");
+                Console.WriteLine("Escolha uma opção a baixo: ");
+                Console.WriteLine("1. Cadastrar Cliente na Fila");
+                Console.WriteLine("2. Listar Fila de Atendimento");
+                Console.WriteLine("3. Atender Próximo Cliente");
+                Console.WriteLine("4. Sair");
+                
+
+                string opcao = Console.ReadLine();
+
+                switch (opcao)
+                {
+                    case "1":
+                        if (ListaClientes < fila_de_espera.Length)
+                        {
+                            Console.Write("CPF do cliente: ");
+                            string cpf = Console.ReadLine();
+
+                            Console.Write("Nome do cliente: ");
+                            string nome = Console.ReadLine();
+
+                            int senha = ListaClientes + 1; 
+                            Cliente cliente = new Cliente
+                            {
+                                CPF = cpf,
+                                Nome = nome,
+                                Senha = senha
+                            };
+
+                            fila_de_espera[ListaClientes] = cliente;
+                            ListaClientes++;
+
+                            Console.WriteLine("Cliente cadastrado na fila_de_espera com sucesso!");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Limite de clientes na fila_de_espera atingido.");
+                        }
+                        break;
+
+                    case "2":
+                        Console.WriteLine("Fila de Atendimento:");
+                        foreach (var cliente in fila_de_espera)
+                        {
+                            if (!string.IsNullOrEmpty(cliente.CPF))
+                            {
+                                Console.WriteLine($"CPF: {cliente.CPF}, Nome: {cliente.Nome}, Senha: {cliente.Senha}");
+                            }
+                        }
+                        break;
+
+                    case "3":
+                        if (ListaClientes > 0)
+                        {
+                            Cliente proximoCliente = fila_de_espera[0];
+                            Console.WriteLine($"Atendendo cliente: CPF: {proximoCliente.CPF}, Nome: {proximoCliente.Nome}, Senha: {proximoCliente.Senha}");
+                            for (int i = 0; i < ListaClientes - 1; i++)
+                            {
+                                fila_de_espera[i] = fila_de_espera[i + 1]; 
+                            }
+                            fila_de_espera[ListaClientes - 1] = new Cliente(); 
+                            ListaClientes--;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Nenhum cliente na fila_de_espera para atender.");
+                        }
+                        break;
+
+                    case "4":
+                        Console.WriteLine("Saindo do programa.");
+                        return;
+
+                    default:
+                        Console.WriteLine("Opção inválida. Tente novamente.");
+                        break;
+                }
+            }
+        }
+    }
+struct Cliente
+{
+    public string CPF;
+    public string Nome;
+    public int Senha;
+}
+
+    }
+
+
