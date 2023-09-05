@@ -1,0 +1,89 @@
+namespace DesafioNoite1
+{
+    struct Produto
+    {
+        public string Codigo;
+        public string Nome;
+        public decimal Preco;
+    }
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+           int NumeroProdutos = 0;
+            Produto[] estoque = new Produto[12];
+
+            while (true) 
+            {
+                Console.WriteLine("Menu:");
+                Console.WriteLine("Escolha uma das opções a baixo: ");
+                Console.WriteLine("\n1. Cadastrar Produto");
+                Console.WriteLine("\n2. Listar Produtos");
+                Console.WriteLine("\n3. Sair");
+                
+
+                string opcao = Console.ReadLine();
+                switch (opcao) 
+                {
+                    case "1":
+                       
+                            if (NumeroProdutos >= estoque.Length)
+                            {
+                                Console.WriteLine("Limite de produtos atingido.");
+                                return; 
+                            }
+
+                            Console.Write("Código do produto: ");
+                            string codigo = Console.ReadLine();
+
+                            Console.Write("Nome do produto: ");
+                            string nome = Console.ReadLine();
+
+                            Console.Write("Preço do produto: ");
+                            decimal preco;
+                            if (!decimal.TryParse(Console.ReadLine(), out preco))
+                            {
+                                Console.WriteLine("Valor de preço inválido. Tente novamente.");
+                                continue;
+                            }
+                            Produto produto = new Produto
+                            {
+                                Codigo = codigo,
+                                Nome = nome,
+                                Preco = preco
+                            };
+
+                            estoque[NumeroProdutos] = produto;
+                            NumeroProdutos++;
+
+                            Console.WriteLine("Produto registrado com sucesso!");
+                            break;
+
+                    case "2":
+                        Console.WriteLine("Lista de Produtos:");
+                        foreach (var Produto in estoque)
+                        {
+                            if (!string.IsNullOrEmpty(Produto.Codigo))
+                            {
+                                Console.WriteLine($"Código: {Produto.Codigo}, Nome: {Produto.Nome}, Preço: R${Produto.Preco:F2}");
+                            }
+                        }
+                        break;
+
+                    case "3":
+                        Console.WriteLine("Encerando o programa.");
+                        return;
+
+                    default:
+                        Console.WriteLine("Esta opcão e não pode ser escutada. \nTente novamente!");
+                        break;
+
+
+                }
+
+
+
+            }
+        }
+    }
+}
