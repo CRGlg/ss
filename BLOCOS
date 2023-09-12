@@ -1,0 +1,164 @@
+namespace Trabalho_00;
+
+
+internal class Program
+{
+    static List<Blocos_XX> blocos = new List<Blocos_XX>();
+    static void Main(string[] args)
+    {
+        while (true)
+        {
+            Console.WriteLine("Bem-vindo ao menu do sistema de controle\n de bloco de rocha. Vamos iniciar as atividades ");
+            Console.WriteLine("\n1. Cadastrar Bloco");
+            Console.WriteLine("\n2. Listar Blocos_XX");
+            Console.WriteLine("\n3. Buscar Bloco por Código");
+            Console.WriteLine("\n4. Listar Blocos_XX por Pedreira");
+            Console.WriteLine("\n5. Sair");
+        }
+        string escolha_opcao = Console.ReadLine();
+
+        switch (escolha_opcao) 
+        {
+            case "1":
+                CadastrarBloco();
+                break;
+
+                case "2":
+                ListarBlocos();
+                break;
+
+                case "3":
+                Console.WriteLine("inserir o código do produto:");
+                string codigo = Console.ReadLine();
+                Buscar_Bloco_Por_Codigo(codigo);
+                break;
+
+                case "4":
+                Console.Write("Digite o nome da pedreira: ");
+                string pedreira = Console.ReadLine();
+                Listar_Blocos_Por_Pedreira(pedreira);
+                break;
+
+                case "5":
+                Console.WriteLine("Saindo do porgrama! \n Deseja retorar ao inicio ou quer sair (S/N)-?");
+                string recomeco = Console.ReadLine();
+                if (recomeco.ToLower() == "s")
+                {
+                    return ;
+                }
+                if(recomeco.ToLower() == "n")
+                {
+                    Console.WriteLine("Finalisando funções");
+                }
+                else
+                {
+                    Console.WriteLine("Opção não encotrada ou não reconhecida");
+                }
+                break;
+
+            default:
+                Console.WriteLine("Opção inválida detectada. Tente novamente.");
+                break;
+        }
+    }
+
+    static void CadastrarBloco()
+    {
+        Console.Write("Código: ");
+        string codigo = Console.ReadLine();
+        Console.Write("Nº do bloco: ");
+        int numeroBloco = int.Parse(Console.ReadLine());
+        Console.Write("Medidas (metros cúbicos): ");
+        double medidas = double.Parse(Console.ReadLine());
+        Console.Write("Descrição: ");
+        string descricao = Console.ReadLine();
+        Console.Write("Tipo de material (mármore ou granito): ");
+        string tipoMaterial = Console.ReadLine();
+        Console.Write("Valor de compra: ");
+        decimal valorCompra = decimal.Parse(Console.ReadLine());
+        Console.Write("Valor de venda: ");
+        decimal valorVenda = decimal.Parse(Console.ReadLine());
+        Console.Write("Pedreira (origem do bloco): ");
+        string pedreira = Console.ReadLine();
+
+        Blocos_XX bloco = new Blocos_XX
+        {
+            Codigo = codigo,
+            NumeroBloco = numeroBloco,
+            Medidas = medidas,
+            Descricao = descricao,
+            TipoMaterial = tipoMaterial,
+            ValorCompra = valorCompra,
+            ValorVenda = valorVenda,
+            Pedreira = pedreira
+        };
+
+        blocos.Add(bloco);
+        Console.WriteLine("Bloco cadastrado com sucesso!");
+    }
+
+    static void ListarBlocos()
+    {
+        Console.WriteLine("Lista de Blocos:");
+        for (int i = 0; i < blocos.Count; i++)
+        {
+            Console.WriteLine($"Código: {blocos[i].Codigo}. \nNúmero: {blocos[i].NumeroBloco}. \nMedidas: {blocos[i].Medidas}. \nDescrição: {blocos[i].Descricao}. \nTipo: {blocos[i].TipoMaterial}, Valor Compra: {blocos[i].ValorCompra}. \nValor Venda: {blocos[i].ValorVenda}. \nPedreira: {blocos[i].Pedreira}.");
+        }
+    }
+}
+
+    static void Buscar_Bloco_Por_Codigo(string codigo)
+    {
+        Blocos_XX blocoEncontrado = blocos.Find(bloco => bloco.Codigo == codigo);
+        if (blocoEncontrado != null)
+        {
+            Console.WriteLine($"Código: {blocoEncontrado.Codigo}");
+            Console.WriteLine($"Nº do bloco: {blocoEncontrado.NumeroBloco}");
+            Console.WriteLine($"Medidas: {blocoEncontrado.Medidas} metros cúbicos");
+            Console.WriteLine($"Descrição: {blocoEncontrado.Descricao}");
+            Console.WriteLine($"Tipo de material: {blocoEncontrado.TipoMaterial}");
+            Console.WriteLine($"Valor de compra: R${blocoEncontrado.ValorCompra:F2}");
+            Console.WriteLine($"Valor de venda: R${blocoEncontrado.ValorVenda:F2}");
+            Console.WriteLine($"Pedreira: {blocoEncontrado.Pedreira}");
+        }
+        else
+        {
+            Console.WriteLine("Bloco não encontrado.");
+        }
+    }
+
+    static void Listar_Blocos_Por_Pedreira(string pedreira)
+    {
+        bool encontrados = false;
+        foreach (var bloco in blocos)
+        {
+            if (bloco.Pedreira == pedreira)
+            {
+                Console.WriteLine($"Código: {bloco.Codigo}");
+                Console.WriteLine($"Nº do bloco: {bloco.NumeroBloco}");
+                Console.WriteLine($"Medidas: {bloco.Medidas} metros cúbicos");
+                Console.WriteLine($"Descrição: {bloco.Descricao}");
+                Console.WriteLine($"Tipo de material: {bloco.TipoMaterial}");
+                Console.WriteLine($"Valor de compra: R${bloco.ValorCompra:F2}");
+                Console.WriteLine($"Valor de venda: R${bloco.ValorVenda:F2}");
+                encontrados = true;
+            }
+        }
+
+        if (!encontrados)
+        {
+            Console.WriteLine("Nenhum bloco encontrado para esta pedreira.");
+        }
+    }
+
+class Blocos_XX
+{
+    public string Codigo { get; set; }
+    public int NumeroBloco { get; set; }
+    public double Medidas { get; set; }
+    public string Descricao { get; set; }
+    public string TipoMaterial { get; set; }
+    public decimal ValorCompra { get; set; }
+    public decimal ValorVenda { get; set; }
+    public string Pedreira { get; set; }
+}
