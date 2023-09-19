@@ -1,0 +1,70 @@
+namespace lavanderia;
+
+internal class Program
+{
+    static void Main(string[] args)
+{
+
+        List<Roupa> listaDeRoupas = new List<Roupa>();
+
+    while (true)
+    {
+    Console.WriteLine("Sistema de Cadastro de Roupas na Lavanderia");
+    Console.WriteLine("1. Cadastrar Roupa");
+    Console.WriteLine("2. Listar Roupas Cadastradas");
+    Console.WriteLine("3. Sair");
+
+    Console.Write("Escolha uma opção: ");
+    string opcao = Console.ReadLine();
+
+            switch (opcao)
+            {
+            case "1":
+            Console.Write("Informe o tipo de roupa: ");
+            string tipo = Console.ReadLine();
+
+            Console.Write("Informe a cor da roupa: ");
+            string cor = Console.ReadLine();
+
+            Console.Write("Informe o tamanho da roupa: ");
+            string tamanho = Console.ReadLine();
+
+
+            Roupa novaRoupa = new Roupa(tipo, cor, tamanho);
+            listaDeRoupas.Add(novaRoupa);
+
+            Console.WriteLine("Roupa cadastrada com sucesso!");
+            break;
+
+            case "2":
+            Console.WriteLine("Lista de Roupas Cadastradas:");
+            foreach (Roupa roupa in listaDeRoupas)
+            {
+            Console.WriteLine($"Tipo: {roupa.Tipo}, Cor: {roupa.Cor}, Tamanho: {roupa.Tamanho}");
+            }
+            break;
+
+            case "3":
+            Environment.Exit(0);
+            break;
+
+            default:
+            Console.WriteLine("Opção inválida. Tente novamente.");
+            break;
+         }
+    }
+}
+
+class Roupa
+{
+    public string Tipo { get; set; }
+    public string Cor { get; set; }
+    public string Tamanho { get; set; }
+
+    public Roupa(string tipo, string cor, string tamanho)
+    {
+        Tipo = tipo;
+        Cor = cor;
+        Tamanho = tamanho;
+    }
+}
