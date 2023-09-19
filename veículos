@@ -1,0 +1,165 @@
+
+namespace Oficina
+{
+    public class Mecanico
+    {
+        public string Nome { get; set; }
+        public string Especializacao { get; set; }
+        public string Endereco { get; set; }
+        public string Telefone { get; set; }
+
+        public Mecanico(string nome, string especializacao, string endereco, string telefone)
+        {
+            Nome = nome;
+            Especializacao = especializacao;
+            Endereco = endereco;
+            Telefone = telefone;
+        }
+
+        public void RealizarAtendimento(Veiculo veiculo, DateTime horaAtendimento)
+        {
+            Console.WriteLine($"Mecânico {Nome} realizou um atendimento para o veículo {veiculo.Tipo} às {horaAtendimento:HH:mm:ss}.");
+        }
+    }
+
+    public class Auxiliar
+    {
+        public string Nome { get; set; }
+        public string Endereco { get; set; }
+        public string Telefone { get; set; }
+
+        public Auxiliar(string nome, string endereco, string telefone)
+        {
+            Nome = nome;
+            Endereco = endereco;
+            Telefone = telefone;
+        }
+    }
+
+    public class Peca
+    {
+        public string Nome { get; set; }
+        public double Preco { get; set; }
+        public int Codigo { get; set; }
+
+        public Peca(string nome, double preco, int codigo)
+        {
+            Nome = nome;
+            Preco = preco;
+            Codigo = codigo;
+        }
+    }
+
+    public class Suprimento
+    {
+        public string Nome { get; set; }
+        public double Preco { get; set; }
+        public int Codigo { get; set; }
+        public string Tipo { get; set; }
+
+        public Suprimento(string nome, double preco, int codigo, string tipo)
+        {
+            Nome = nome;
+            Preco = preco;
+            Tipo = tipo;
+            Codigo = codigo;
+        }
+    }
+
+    public enum TipoVeiculo
+    {
+        Carro = 1,
+        Moto = 2,
+        Caminhao = 3
+    }
+
+    public class Veiculo
+    {
+        public TipoVeiculo Tipo { get; set; }
+        public string Modelo { get; set; }
+        public int Ano { get; set; }
+        public string Placa { get; set; }
+
+        public Veiculo(TipoVeiculo tipo, string modelo, int ano, string placa)
+        {
+            Tipo = tipo;
+            Modelo = modelo;
+            Ano = ano;
+            Placa = placa;
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            List<Mecanico> mecanicos = new List<Mecanico>();
+            List<Veiculo> veiculos = new List<Veiculo>();
+
+            while (true)
+            {
+                Console.WriteLine("Sistema de Atendimento da Oficina de Veículos");
+                Console.WriteLine("1. Cadastrar Mecânico");
+                Console.WriteLine("2. Cadastrar Veículo");
+                Console.WriteLine("3. Realizar Atendimento");
+                Console.WriteLine("4. Sair");
+
+                Console.Write("Escolha uma opção: ");
+                string opcao = Console.ReadLine();
+
+                switch (opcao)
+                {
+                    case "1":
+                        Console.Write("Nome do Mecânico: ");
+                        string nomeMecanico = Console.ReadLine();
+                        Console.Write("Especialização do Mecânico: ");
+                        string especializacaoMecanico = Console.ReadLine();
+                        Console.Write("Endereço do Mecânico: ");
+                        string enderecoMecanico = Console.ReadLine();
+                        Console.Write("Telefone do Mecânico: ");
+                        string telefoneMecanico = Console.ReadLine();
+                        Mecanico novoMecanico = new Mecanico(nomeMecanico, especializacaoMecanico, enderecoMecanico, telefoneMecanico);
+                        mecanicos.Add(novoMecanico);
+                        Console.WriteLine("Mecânico cadastrado com sucesso!");
+                        break;
+
+                    case "2":
+                        Console.Write("Tipo de Veículo (1 - Carro, 2 - Moto, 3 - Caminhao): ");
+                        if (Enum.TryParse(Console.ReadLine(), out TipoVeiculo tipoVeiculo))
+                        {
+                            Console.Write("Modelo do Veículo: ");
+                            string modeloVeiculo = Console.ReadLine();
+                            Console.Write("Ano do Veículo: ");
+                            int anoVeiculo = int.Parse(Console.ReadLine());
+                            Console.Write("Placa do Veículo: ");
+                            string placaVeiculo = Console.ReadLine();
+                            Veiculo novoVeiculo = new Veiculo(tipoVeiculo, modeloVeiculo, anoVeiculo, placaVeiculo);
+                            veiculos.Add(novoVeiculo);
+                            Console.WriteLine("Veículo cadastrado com sucesso!");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Opção de tipo de veículo inválida.");
+                        }
+                        break;
+
+                    case "3":
+                        if (mecanicos.Count == 0 || veiculos.Count == 0)
+                        {
+                            Console.WriteLine("Cadastre pelo menos um mecânico e um veículo antes de realizar um atendimento.");
+                            break;
+                        }
+
+                        Console.WriteLine("Selecione um Mecânico para o Atendimento:");
+                        for (int i = 0; i < mecanicos.Count; i++)
+                        {
+                            Console.WriteLine($"{i + 1}. {mecanicos[i].Nome} ({mecanicos[i].Especializacao})");
+                        }
+                        int indiceMecanico = int.Parse(Console.ReadLine()) - 1;
+
+                        Console.WriteLine("Selecione um Veículo para o Atendimento:");
+                        for (int i = 0; i < veiculos.Count; i++)
+                        {
+                            Console.WriteLine($"{i + 1}. {veiculos[i].Modelo} ({veiculos[i].Placa})");
+                        }
+                        int indiceVeiculo = int.Parse(Console.ReadLine()) - 1;
