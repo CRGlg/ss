@@ -1,0 +1,83 @@
+namespace compras10
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            List<string> listaCompras = new List<string>();
+
+
+
+            Console.WriteLine("Hello, esta é sua lista de compras \n Vamos começar");
+
+            bool comeco = true;
+            while (comeco)
+            {
+                Console.WriteLine("ESCOLHA UMA OPÇÃO A SEGUIR :");
+                Console.WriteLine("#1 adicionar item a lista.");
+                Console.WriteLine("#2 verificar a lista de compras. ");
+                Console.WriteLine("#3 Sair.");
+
+                string escolha = Console.ReadLine();
+
+                switch (escolha)
+                {
+                    case "1":
+                        Console.WriteLine("Digite um item para ser adicionado: ");
+                        string item = Console.ReadLine();
+                        listaCompras.Add(item);
+                        Console.WriteLine("Item adicionado com sucesso!!");
+                        break;
+
+                    case "2":
+                        Console.WriteLine("Lisar compras no carinho");
+                        ListarItensListaCompra(listaCompras);
+                        break;
+                        
+                    case "3":
+                        Sair();
+                        break;
+                    default: 
+                        Console.WriteLine("Essa opção é invalida");
+                        break;
+
+
+                }
+
+                SalvarMinhaLista(listaCompras);
+                Console.WriteLine("Sua lisa foi salva. \n Precione qualquer tecla para sair.");
+                Console.ReadKey();
+            }
+
+
+
+
+
+        }
+
+        private static void SalvarMinhaLista(List<string> listaCompras)
+        {
+            using (StreamWriter sw = new StreamWriter(@"c:\compras\ListadeCompras.txt"))
+            {
+                foreach (string item in listaCompras)
+                {
+                    sw.WriteLine(item);
+                }
+            }
+        }
+
+        private static void Sair()
+        {
+            Console.WriteLine("Encerrando");
+            Console.ReadKey(); 
+        }
+
+        private static void ListarItensListaCompra(List<string> listaCompras)
+        {
+            for (int i = 0; i < listaCompras.Count; i++)
+            {
+                Console.WriteLine( $" {i+1}.  {listaCompras[i]} ");
+            }
+        }
+    }
+}
