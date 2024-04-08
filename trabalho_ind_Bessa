@@ -1,0 +1,282 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
+//Carlos Ribeiro Greggio
+namespace SistemaParaEventos
+{
+    class Evento
+    {
+        public string ID { get; }
+        public string Titulo { get; set; }
+        public DateTime Data { get; set; }
+        public DateTime HoraInicial { get; set; }
+        public DateTime HoraFinal { get; set; }
+        public string Descricao { get; set; }
+        public int QuantidadePessoas { get; set; }
+        public string PublicoAlvo { get; set; }
+        public string NomeContato { get; set; }
+        public string TelefoneContato { get; set; }
+        public string EmailContato { get; set; }
+
+        public Evento(string id, string titulo, DateTime data, DateTime horaInicial, DateTime horaFinal, string descricao, int quantidadePessoas, string publicoAlvo, string nomeContato, string telefoneContato, string emailContato)
+        {
+            ID = id;
+            Titulo = titulo;
+            Data = data;
+            HoraInicial = horaInicial;
+            HoraFinal = horaFinal;
+            Descricao = descricao;
+            QuantidadePessoas = quantidadePessoas;
+            PublicoAlvo = publicoAlvo;
+            NomeContato = nomeContato;
+            TelefoneContato = telefoneContato;
+            EmailContato = emailContato;
+        }
+
+        public override string ToString()
+        {
+            return $"ID: {ID}\nTítulo: {Titulo}\nData: {Data:dd/MM/yyyy}\nHora Inicial: {HoraInicial:HH:mm}\nHora Final: {HoraFinal:HH:mm}\nDescrição: {Descricao}\nQuantidade de Pessoas: {QuantidadePessoas}\nPublico Alvo: {PublicoAlvo}\nNome do Contato: {NomeContato}\nTelefone do Contato: {TelefoneContato}\nE-mail do Contato: {EmailContato}\n";
+        }
+    }
+
+    class Program
+    {
+        static List<Evento> eventos = new List<Evento>();
+
+        public static void Main(string[] args)
+        {
+            Console.WriteLine("Bem-vindo ao sistema de eventos");
+
+            while (true)
+            {
+                Console.WriteLine("\nVocê pode começar a cadastrar eventos agora");
+                Console.WriteLine("1. Cadastrar evento");
+                Console.WriteLine("2. Listar eventos por período");
+                Console.WriteLine("3. Pesquisar evento por data");
+                Console.WriteLine("4. Editar evento");
+                Console.WriteLine("5. Pesquisar contato");
+                Console.WriteLine("6. Excluir evento por ID");
+                Console.WriteLine("7. Sair");
+
+                string opcao = Console.ReadLine();
+
+                switch (opcao)
+                {
+                    case "1":
+                        CadastrarEvento();
+                        break;
+                    case "2":
+                        ListarEventosPorPeriodo();
+                        break;
+                    case "3":
+                        PesquisarEventoPorData();
+                        break;
+                    case "4":
+                        EditarEvento();
+                        break;
+                    case "5":
+                        PesquisarContato();
+                        break;
+                    case "6":
+                        ExcluirEventoPorID();
+                        break;
+                    case "7":
+                        Console.WriteLine("Saindo do aplicativo");
+                        ExeportarAgendaEventos(eventos);
+                        return;
+                    default:
+                        Console.WriteLine("Opção incorreta detectada. \nTente novamente!");
+                        break;
+                }
+            }
+        }
+
+        private static void ExeportarAgendaEventos(List<Evento> eventos)
+        {
+            using (StreamWriter sw = new StreamWriter(@"c:\eventos\AgendaEventos.txt"))
+            {
+                foreach (Evento evento in eventos)
+                {
+                    sw.WriteLine(evento.ToString());
+                }
+            }
+        }
+
+        private static void ExcluirEventoPorID()
+        {
+            Console.WriteLine("Digite o ID do evento que deseja excluir:");
+            string idEvento = Console.ReadLine();
+
+            Evento evento = eventos.Find(e => e.ID == idEvento);
+            if (evento != null)
+            {
+                eventos.Remove(evento);
+                Console.WriteLine("Evento excluído com sucesso!");
+            }
+            else
+            {
+                Console.WriteLine("Evento não encontrado para o ID especificado.");
+            }
+        }
+
+        private static void PesquisarContato()
+        {
+            Console.WriteLine("Digite o nome do contato que deseja pesquisar:");
+            string nomeContato = Console.ReadLine();
+
+            Evento evento = eventos.Find(e => e.NomeContato.ToLower() == nomeContato.ToLower());
+            if (evento != null)
+            {
+                Console.WriteLine(evento);
+            }
+            else
+            {
+                Console.WriteLine("Nenhum evento encontrado para o contato especificado.");
+            }
+        }
+
+        private static void EditarEvento()
+        {
+            Console.WriteLine("Digite o ID do evento que deseja editar:");
+            string idEvento = Console.ReadLine();
+
+            Evento evento = eventos.Find(e => e.ID == idEvento);
+            if (evento != null)
+            {
+                Console.WriteLine("Digite o novo título do evento:");
+                evento.Titulo = Console.ReadLine();
+
+                Console.WriteLine("Digite a nova data do evento (dd/mm/aaaa):");
+                evento.Data = DateTime.Parse(Console.ReadLine());
+
+                Console.WriteLine("Digite a nova hora inicial do evento (hh:mm):");
+                evento.HoraInicial = DateTime.Parse(Console.ReadLine());
+
+                Console.WriteLine("Digite a nova hora final do evento (hh:mm):");
+                evento.HoraFinal = DateTime.Parse(Console.ReadLine());
+
+                Console.WriteLine("Digite a nova descrição do evento:");
+                evento.Descricao = Console.ReadLine();
+
+                Console.WriteLine("Digite a nova quantidade aproximada/prevista de pessoas:");
+                evento.QuantidadePessoas = int.Parse(Console.ReadLine());
+
+                Console.WriteLine("Digite o novo público alvo do evento:");
+                evento.PublicoAlvo = Console.ReadLine();
+
+                Console.WriteLine("Digite o novo nome do contato responsável:");
+                evento.NomeContato = Console.ReadLine();
+
+                Console.WriteLine("Digite o novo telefone de contato do responsável");
+                evento.TelefoneContato = Console.ReadLine();
+
+                Console.WriteLine("Digite o novo e-mail do contato responsável:");
+                evento.EmailContato = Console.ReadLine();
+
+                Console.WriteLine("Evento editado com sucesso!");
+            }
+            else
+            {
+                Console.WriteLine("Evento não encontrado para o ID especificado.");
+            }
+        }
+
+        private static void PesquisarEventoPorData()
+        {
+            Console.WriteLine("Digite a data do evento que deseja pesquisar (dd/mm/aaaa):");
+            DateTime dataPesquisa = DateTime.Parse(Console.ReadLine());
+
+            List<Evento> eventosEncontrados = eventos.FindAll(e => e.Data.Date == dataPesquisa.Date);
+            if (eventosEncontrados.Count > 0)
+            {
+                foreach (Evento evento in eventosEncontrados)
+                {
+                    Console.WriteLine(evento);
+                }
+            }
+            else
+            {
+                Console.WriteLine("Nenhum evento encontrado para a data especificada.");
+            }
+        }
+
+        private static void ListarEventosPorPeriodo()
+        {
+            Console.WriteLine("Digite a data de início do período (dd/mm/aaaa):");
+            DateTime dataInicio = DateTime.Parse(Console.ReadLine());
+
+            Console.WriteLine("Digite a data de fim do período (dd/mm/aaaa):");
+            DateTime dataFim = DateTime.Parse(Console.ReadLine());
+
+            List<Evento> eventosEncontrados = eventos.FindAll(e => e.Data.Date >= dataInicio.Date && e.Data.Date <= dataFim.Date);
+            if (eventosEncontrados.Count > 0)
+            {
+                foreach (Evento evento in eventosEncontrados)
+                {
+                    Console.WriteLine(evento);
+                }
+            }
+            else
+            {
+                Console.WriteLine("Nenhum evento encontrado para o período especificado.");
+            }
+        }
+
+        private static void CadastrarEvento()
+        {
+            var id = GerarCodigoAlfanumerico(6);
+            Console.WriteLine("Código gerado: " + id);
+
+            Console.WriteLine("Digite o título do evento:");
+            string titulo = Console.ReadLine();
+
+            Console.WriteLine("Digite a data do evento (dd/mm/aaaa):");
+            DateTime data = DateTime.Parse(Console.ReadLine());
+
+            Console.WriteLine("Digite a hora inicial do evento (hh:mm):");
+            DateTime horaInicial = DateTime.Parse(Console.ReadLine());
+
+            Console.WriteLine("Digite a hora final do evento (hh:mm):");
+            DateTime horaFinal = DateTime.Parse(Console.ReadLine());
+
+            Console.WriteLine("Digite a descrição do evento:");
+            string descricao = Console.ReadLine();
+
+            Console.WriteLine("Digite a quantidade aproximada/prevista de pessoas:");
+            int quantidadePessoas = int.Parse(Console.ReadLine());
+
+            Console.WriteLine("Digite o público alvo do evento:");
+            string publicoAlvo = Console.ReadLine();
+
+            Console.WriteLine("Digite o nome do contato responsável pelo evento:");
+            string nomeContato = Console.ReadLine();
+
+            Console.WriteLine("Digite o telefone de contato do responsável:");
+            string telefoneContato = Console.ReadLine();
+
+            Console.WriteLine("Digite o e-mail do contato responsável:");
+            string emailContato = Console.ReadLine();
+
+            Evento evento = new Evento(id, titulo, data, horaInicial, horaFinal, descricao, quantidadePessoas, publicoAlvo, nomeContato, telefoneContato, emailContato);
+
+            eventos.Add(evento);
+
+            Console.WriteLine("Evento cadastrado com sucesso!");
+        }
+
+        private static string GerarCodigoAlfanumerico(int v)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            Random random = new Random();
+            StringBuilder sb = new StringBuilder(v);
+
+            for (int i = 0; i < v; i++)
+            {
+                sb.Append(chars[random.Next(chars.Length)]);
+            }
+
+            return sb.ToString();
+        }
+    }
+}
