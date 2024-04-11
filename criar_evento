@@ -168,10 +168,10 @@ namespace SistemaParaEventos
                 Console.WriteLine("Digite o novo nome do contato responsável:");
                 evento.NomeContato = Console.ReadLine();
 
-                Console.WriteLine("Digite o novo telefone de contato do responsável");
+                Console.WriteLine("Digite o novo telefone do responsável");
                 evento.TelefoneContato = Console.ReadLine();
 
-                Console.WriteLine("Digite o novo e-mail do contato responsável:");
+                Console.WriteLine("Digite o novo e-mail do responsável:");
                 evento.EmailContato = Console.ReadLine();
 
                 Console.WriteLine("Evento editado com sucesso!");
@@ -252,10 +252,10 @@ namespace SistemaParaEventos
             Console.WriteLine("Digite o nome do contato responsável pelo evento:");
             string nomeContato = Console.ReadLine();
 
-            Console.WriteLine("Digite o telefone de contato do responsável:");
+            Console.WriteLine("Digite o telefone do responsável:");
             string telefoneContato = Console.ReadLine();
 
-            Console.WriteLine("Digite o e-mail do contato responsável:");
+            Console.WriteLine("Digite o e-mail do responsável:");
             string emailContato = Console.ReadLine();
 
             Evento evento = new Evento(id, titulo, data, horaInicial, horaFinal, descricao, quantidadePessoas, publicoAlvo, nomeContato, telefoneContato, emailContato);
